@@ -20,7 +20,7 @@ public class FacultyService {
     }
 
     public Faculty findFaculty(long id) {
-        Optional<Object> facultyOptional = facultyRepository.findById(id);
+        Optional<Object> facultyOptional = Optional.of(Optional.of(facultyRepository.findById(id)));
 
         return (Faculty) facultyOptional.orElse(null);
     }
