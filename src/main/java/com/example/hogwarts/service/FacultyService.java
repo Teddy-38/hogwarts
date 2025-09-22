@@ -1,10 +1,12 @@
 package com.example.hogwarts.service;
 
 import com.example.hogwarts.model.Faculty;
+import com.example.hogwarts.model.Student;
 import com.example.hogwarts.repository.FacultyRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional; //
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FacultyService {
@@ -31,5 +33,15 @@ public class FacultyService {
 
     public void deleteFaculty(long id) {
         facultyRepository.deleteById(id);
+    }
+
+    public Optional<Faculty> findByNameOrColor(String searchString) {
+        return facultyRepository.findByNameIgnoreCaseOrColorIgnoreCase(searchString, searchString);
+    }
+
+    public List<Student> getStudentsByFacultyId(Long facultyId) {
+        return facultyRepository.findById(facultyId)
+                .map(Faculty::getStudents)
+                .orElse(null);
     }
 }
