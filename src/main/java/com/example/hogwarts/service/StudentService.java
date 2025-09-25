@@ -46,4 +46,16 @@ public class StudentService {
                 .map(Student::getFaculty)
                 .orElse(null); // или .orElseThrow()
     }
+
+    public Integer getTotalStudentCount() {
+        return studentRepository.getTotalStudentCount();
+    }
+
+    public Double getAverageStudentAge() {
+        return studentRepository.getAverageStudentAge();
+    }
+
+    public List<Student> findLastFiveStudents() {
+        return studentRepository.findLastFiveStudents();
+    }
 }
