@@ -21,7 +21,7 @@ public class StudentController {
 
     @GetMapping("/age-between")
     public ResponseEntity<List<Student>> getStudentsByAgeBetween(@RequestParam int min, @RequestParam int max) {
-        List<Student> students = studentService.findByAgeBetween(min, max);
+        List<Student> students = (List<Student>) studentService.findByAgeBetween(min, max);
         if (students.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
