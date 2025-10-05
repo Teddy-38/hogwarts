@@ -1,12 +1,11 @@
 package com.example.hogwarts.controller;
 
 import com.example.hogwarts.model.Faculty;
-import com.example.hogwarts.model.Student;
 import com.example.hogwarts.service.FacultyService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/faculty")
@@ -26,15 +25,15 @@ public class FacultyController {
     }
 
     @GetMapping("/find")
-    public ResponseEntity<Faculty> findFacultyByNameOrColor(@RequestParam String search) {
+    public ResponseEntity<Object> findFacultyByNameOrColor(@RequestParam String search) {
         return facultyService.findByNameOrColor(search)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/{id}/students")
-    public ResponseEntity<List<Student>> getStudentsByFaculty(@PathVariable Long id) {
-        List<Student> students = facultyService.getStudentsByFacultyId(id);
+    public ResponseEntity<Optional<Object>> getStudentsByFaculty(@PathVariable Long id) {
+        Optional<Object> students = facultyService.getStudentsByFacultyId(id);
         if (students == null) {
             return ResponseEntity.notFound().build();
         }
