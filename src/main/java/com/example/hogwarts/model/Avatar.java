@@ -14,5 +14,6 @@ public class Avatar {
     }
 
     public void setData(byte[] bytes) {
+
     }
 }
