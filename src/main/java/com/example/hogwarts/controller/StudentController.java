@@ -54,8 +54,14 @@ public class StudentController {
     public List<String> getStudentNamesStartingWithA() {
         return studentService.getStudentNamesStartingWithA();
     }
-    @GetMapping("/average-age")
-        public Double getAverageStudentAge() {
-            return studentService.getAverageStudentAge();
+
+    @GetMapping("/print-parallel")
+    public void printStudentsParallel() {
+        studentService.printStudentsParallel();
+    }
+
+    @GetMapping("/print-synchronized")
+    public void printStudentsSynchronized() {
+        studentService.printStudentsSynchronized();
     }
 }
