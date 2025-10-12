@@ -15,9 +15,10 @@ import java.util.stream.Collectors;
 @Service
 public class StudentService {
 
-    private static final Logger logger = LoggerFactory.getLogger(StudentService.class);
-
     private final StudentRepository studentRepository;
+
+    private final Logger logger = LoggerFactory.getLogger(StudentService.class);
+
 
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
@@ -98,5 +99,58 @@ public class StudentService {
                 .mapToInt(Student::getAge)
                 .average()
                 .orElse(0.0);
+    }
+    public void printStudentsParallel() {
+        List<Student> students = studentRepository.findAll();
+
+        if (students.size() < 6) {
+            logger.warn("Недостаточно студентов для демонстрации. Требуется минимум 6.");
+            return;
+        }
+
+        printStudentName(students.get(0), "Основной поток");
+        printStudentName(students.get(1), "Основной поток");
+
+        new Thread(() -> {
+            printStudentName(students.get(2), "Параллельный поток 1");
+            printStudentName(students.get(3), "Параллельный поток 1");
+        }).start();
+
+        new Thread(() -> {
+            printStudentName(students.get(4), "Параллельный поток 2");
+            printStudentName(students.get(5), "Параллельный поток 2");
+        }).start();
+    }
+
+    public void printStudentsSynchronized() {
+        List<Student> students = studentRepository.findAll();
+
+        if (students.size() < 6) {
+            logger.warn("Недостаточно студентов для демонстрации. Требуется минимум 6.");
+            return;
+        }
+
+        printStudentNameSynchronized(students.get(0), "Основной поток");
+        printStudentNameSynchronized(students.get(1), "Основной поток");
+
+        new Thread(() -> {
+            printStudentNameSynchronized(students.get(2), "Параллельный поток 1");
+            printStudentNameSynchronized(students.get(3), "Параллельный поток 1");
+        }).start();
+
+        new Thread(() -> {
+            printStudentNameSynchronized(students.get(4), "Параллельный поток 2");
+            printStudentNameSynchronized(students.get(5), "Параллельный поток 2");
+        }).start();
+    }
+
+    private void printStudentName(Student student, String threadName) {
+        // System.out.println() сам по себе потокобезопасен, но порядок вывода не гарантирован
+        System.out.println(threadName + ": " + student.getName() + " (ID: " + student.getId() + ")");
+    }
+
+    private synchronized void printStudentNameSynchronized(Student student, String threadName) {
+
+        System.out.println(threadName + " (синхр.): " + student.getName() + " (ID: " + student.getId() + ")");
     }
 }
