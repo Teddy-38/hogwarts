@@ -1,6 +1,6 @@
 package com.example.hogwarts.controller;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.example.hogwarts.service.InfoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,11 +9,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/info")
 public class InfoController {
 
-    @Value("${server.port}")
-    private Integer serverPort;
+    private final InfoService infoService;
 
-    @GetMapping("/port")
-    public Integer getPort() {
-        return serverPort;
+    public InfoController(InfoService infoService) {
+        this.infoService = infoService;
+    }
+
+    @GetMapping("/fast-sum")
+    public long getSumOptimized() {
+        return infoService.calculateSumOptimized();
     }
 }
