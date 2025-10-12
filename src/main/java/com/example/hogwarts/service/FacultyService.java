@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,5 +78,11 @@ public class FacultyService {
     }
 
     public Optional<Object> getStudentsByFacultyId(Long id) {return Optional.empty();
+    }
+    public String getLongestFacultyName() {
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length))
+                .orElse("Факультеты не найдены");
     }
 }
